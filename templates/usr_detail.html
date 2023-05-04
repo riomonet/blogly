@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}user detail{% endblock %}
+
+
+{% block content%}
+<img alt="" src=""/>
+<h1>{{user.first}} {{user.last}}</h1>
+<form>
+    <input formaction="/users/{{user.id}}/edit" value="Edit" type="submit"></input>
+    <input formaction="/users/{{user.id}}/delete" value="Delete" type="submit"></input>
+</form>
+<br>
+<a href="/">Goto Main List</a>
+{% endblock %}
