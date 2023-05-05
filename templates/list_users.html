@@ -4,6 +4,7 @@
 
 {% block content%}
 <h1>Users</h1>
+
 <ul>
 
     {% for user in users %}
@@ -14,4 +15,6 @@
 <form action="/users/new">
     <input type="submit" value="Add user"></input>
 </form>
+
 {% endblock %}
+

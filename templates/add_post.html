@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}edit user{% endblock %}
+
+{% block content%} 
+
+<h1>Add Post for {{user.first}} {{user.last}}</h1>
+<form method="POST">
+    <table>
+	<tr><th><label for="title">Title</label></th>
+	    <td><input name="title" type="text" value=""/></tr></td>
+
+	    <tr><th><label for="content">Content</label></th>
+		<td><textarea name="content" type="text" value=""></textarea></td></tr>
+
+    </table>
+    <input type="submit" value="add" formaction="/users/{{user.id}}/posts/new"></input>
+    <input type="submit" value="Cancel" formaction="/users" ></input>
+</form>
+{% endblock %}

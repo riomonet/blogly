@@ -2,7 +2,7 @@
 
 {% block title %}user detail{% endblock %}
 
-
+2
 {% block content%}
 <img alt="" src=""/>
 <h1>{{user.first}} {{user.last}}</h1>
@@ -10,6 +10,16 @@
     <input formaction="/users/{{user.id}}/edit" value="Edit" type="submit"></input>
     <input formaction="/users/{{user.id}}/delete" value="Delete" type="submit"></input>
 </form>
+<form action="/users/{{user.id}}/posts/new">
+    <button type="submit">Add Post</button>
+</form>
+<h2>Posts</h2>
+<ul>
+    {% for post in user.posts %}
+    <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+    {% endfor %}
+</ul>
+
 <br>
 <a href="/">Goto Main List</a>
 {% endblock %}
