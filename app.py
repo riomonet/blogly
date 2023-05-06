@@ -4,6 +4,7 @@ from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, Users, Posts
 from datetime import datetime
+from forms import SnackForm
 
 app = Flask(__name__)
 app.app_context().push()
@@ -112,3 +113,11 @@ def delete_post(post_id):
     db.session.commit();
     return redirect (f'/users/{user}')
     
+@app.route("/snacks/new", methods=["POST","GET "])
+def add_snack():
+    form = SnackForm()
+    if form.validate_on_submit():
+        return redirect('/users')
+        
+    else:                       # get request goes to the else
+        return render_template("add_snack_form.html" , form=form)

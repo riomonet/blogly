@@ -5,15 +5,19 @@
 2
 {% block content%}
 <img alt="" src=""/>
-<h1>{{user.first}} {{user.last}}</h1>
-<form>
-    <input formaction="/users/{{user.id}}/edit" value="Edit" type="submit"></input>
-    <input formaction="/users/{{user.id}}/delete" value="Delete" type="submit"></input>
+<h1 class="display-2 text-center">{{user.first}} {{user.last}}</h1>
+<form class="text-center">
+    <input class="btn" formaction="/users/{{user.id}}/edit" value="Edit" type="submit"></input>
+    <input class="btn" formaction="/users/{{user.id}}/delete" value="Delete" type="submit"></input>
 </form>
-<form action="/users/{{user.id}}/posts/new">
-    <button type="submit">Add Post</button>
+<form class="text-center" action="/users/{{user.id}}/posts/new">
+    <button class="btn" type="submit">Add Post</button>
 </form>
-<h2>Posts</h2>
+
+
+<div class="text-center">
+    p<h2 class="display-3">Posts</h2>
+    <hr/>
 <ul>
     {% for post in user.posts %}
     <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
@@ -22,4 +26,5 @@
 
 <br>
 <a href="/">Goto Main List</a>
+</div>
 {% endblock %}

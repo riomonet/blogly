@@ -3,18 +3,28 @@
 {% block title %}user list{% endblock %}
 
 {% block content%}
-<h1>Users</h1>
 
-<ul>
+
+
+<h1 class="display-2 text-center">Users</h1>
+
+
+<div class="container" >
+<ul class="list-group">
 
     {% for user in users %}
-    <li><a href="/users/{{user.id}}">{{user.first}} {{user.last}}</a></li>
+    
+    <li class="list-group-item"> <a href="/users/{{user.id}}">{{user.first}} {{user.last}}</a> </li>
+
     {% endfor %}
+    
 
 </ul>
-<form action="/users/new">
-    <input type="submit" value="Add user"></input>
+</div>
+<form class="text-center" action="/users/new">
+    <button class="btn btn-outline-primary">Add user</button>
 </form>
+
 
 {% endblock %}
 
