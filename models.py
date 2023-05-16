@@ -33,29 +33,19 @@ class Posts(db.Model):
         
         usr = db.relationship('Users',backref = 'posts')
 
+ class Tags(db.Model):
+         """table of tags"""
 
-    
+         __tablename__ = 'tags'
 
-    # @classmethod
-    # def get_by_species(cls, species):
-    #     return cls.query.filter_by(species=species).all()
-        
-    # @classmethod
-    # def get_hungry(cls, species):
-    #     return cls.query.filter(cls.hunger > 40)
+         id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+         tag_name = db.Column(db.String(25), nullable = False)
+         
 
-    # def greet(self):
-    #     return f'Hi, I am  {self.name} the {self.species}'
-        
-    # def __repr__(self):
-    #     """show info about pet"""
-    #     p = self
-    #     return f"<Pets id={p.id} name={p.name} species={p.species} hunger={p.hunger}>"
+class Tag_Posts(db.Model):
+        """m2m tag-posts table"""
 
-    
+        __tablename__ = 'post_tags'
 
-
-    
-
-    
-
+        tag_id =  db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key = True)
+        post_id = db.Column(db.Integer, db.ForeignKey('oists.id'), primary_key = True)
