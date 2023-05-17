@@ -16,6 +16,7 @@ class Users(db.Model):
         first = db.Column(db.String(25),nullable = False)
         last = db.Column(db.String(25),nullable = False)
         image_url = db.Column(db.String(40), nullable = True)
+        post = db.relationship("Posts", backref="users", cascade="all, delete-orphan")
 
         @property
         def full_name(self):
@@ -38,6 +39,7 @@ class Posts(db.Model):
 
         usr = db.relationship('Users',backref = 'posts')
 
+
 class Tags(db.Model):
 
         """table of tags"""
@@ -45,9 +47,12 @@ class Tags(db.Model):
 
         id = db.Column(db.Integer, primary_key = True, autoincrement = True)
         tag_name = db.Column(db.String(25), nullable = False)
-        posts = db.relationship('Posts', secondary='post_tags', backref = 'tags')
+        posts = db.relationship('Posts', secondary='post_tags'
+                                ,cascade="all,delete"
+                                , backref = 'tags')
 
-         
+
+
 
 class Tag_Posts(db.Model):
         """m2m tag-posts table"""

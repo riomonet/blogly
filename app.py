@@ -62,9 +62,10 @@ def edit_tag_post(tag_id):
 
 @app.route('/tags/<tag_id>/delete')
 def delete_tag(tag_id):
+    tag = Tags.query.get_or_404(tag_id)
+    db.session.delete(tag)
+    db.session.commit()
 
-    Tags.query.filter_by(id=tag_id).delete()
-    db.session.commit();
     return redirect ('/tags')
 
 @app.route('/users', methods=["POST","GET"])
