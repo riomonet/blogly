@@ -2,7 +2,7 @@
 
 from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, Users, Posts
+from models import db, connect_db, Users, Posts, Tags
 from datetime import datetime
 from forms import SnackForm
 
@@ -22,6 +22,54 @@ with app.app_context():
 @app.route('/')
 def home():
     return redirect('/users')
+
+@app.route('/tags')
+def tag_list():
+    tags = Tags.query.all()
+    return render_template('list_tags.html', tags=tags)
+
+@app.route('/tags/<tag_id>')
+def tag_detail(tag_id):
+    tags = Tags.query.get_or_404(tag_id)
+    return render_template('tag_detail.html',tags = tags)
+
+@app.route('/tags/new')
+def add_tag_form():
+    return render_template('add_tag.html')
+
+@app.route('/tags/new', methods=["POST"])
+def add_tag_post():
+    name = request.form['tag_name']
+    tag_name = Tags(tag_name=name)
+    db.session.add(tag_name)
+    db.session.commit()
+    return redirect('/tags')
+
+@app.route('/tags/<tag_id>/edit')
+def edit_tag(tag_id):
+    tags = Tags.query.get(tag_id)
+    return render_template('edit_tag.html',tags=tags)
+
+
+@app.route('/tags/<tag_id>/edit', methods=["POST"])
+def edit_tag_post(tag_id):
+    tag = Tags.query.get_or_404(tag_id)
+    tag.tag_name = request.form['tag_name']
+    # db.session.add(tag)
+    db.session.commit()
+    return redirect('/tags')
+
+
+@app.route('/tags/<tag_id>/delete')
+def delete_tag(tag_id):
+
+    Tags.query.filter_by(id=tag_id).delete()
+    db.session.commit();
+    return redirect ('/tags')
+
+
+
+
 
 @app.route('/users', methods=["POST","GET"])
 def user_list():
@@ -121,3 +169,4 @@ def add_snack():
         
     else:                       # get request goes to the else
         return render_template("add_snack_form.html" , form=form)
+

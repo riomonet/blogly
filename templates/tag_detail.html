@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}tag detail{% endblock %}
+
+
+{% block content%}
+
+<img alt="" src=""/>
+
+<h1 class="display-2 text-center">{{tags.tag_name}}</h1>
+
+<form class="text-center">
+    <input class="btn" formaction="/tags/{{tags.id}}/edit" value="Edit" type="submit"></input>
+    <input class="btn" formaction="/tags/{{tags.id}}/delete" value="Delete" type="submit"></input>
+</form>
+
+{% endblock %}x
+

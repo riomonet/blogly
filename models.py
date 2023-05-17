@@ -17,7 +17,7 @@ class Users(db.Model):
         last = db.Column(db.String(25),nullable = False)
         image_url = db.Column(db.String(40), nullable = True)
 
-        # posts = db.relationship('Posts')
+
 
 class Posts(db.Model):
         """posts"""
@@ -30,16 +30,17 @@ class Posts(db.Model):
         created_at = db.Column(db.DateTime, nullable = False)
         user = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-        
         usr = db.relationship('Users',backref = 'posts')
 
- class Tags(db.Model):
-         """table of tags"""
+class Tags(db.Model):
 
-         __tablename__ = 'tags'
+        """table of tags"""
+        __tablename__ = 'tags'
 
-         id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-         tag_name = db.Column(db.String(25), nullable = False)
+        id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+        tag_name = db.Column(db.String(25), nullable = False)
+        posts = db.relationship('Posts', secondary='post_tags', backref = 'tags')
+
          
 
 class Tag_Posts(db.Model):
@@ -48,4 +49,6 @@ class Tag_Posts(db.Model):
         __tablename__ = 'post_tags'
 
         tag_id =  db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key = True)
-        post_id = db.Column(db.Integer, db.ForeignKey('oists.id'), primary_key = True)
+        post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key = True)
+
+        
