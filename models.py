@@ -17,6 +17,12 @@ class Users(db.Model):
         last = db.Column(db.String(25),nullable = False)
         image_url = db.Column(db.String(40), nullable = True)
 
+        @property
+        def full_name(self):
+                """Return full name of user."""
+
+                return f"{self.first} {self.last}"
+
 
 
 class Posts(db.Model):

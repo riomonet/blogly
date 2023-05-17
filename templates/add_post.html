@@ -1,20 +1,42 @@
 {% extends "base.html" %}
 
-{% block title %}edit user{% endblock %}
+{% block title %}add Post{% endblock %}
 
 {% block content%} 
 
-<h1>Add Post for {{user.first}} {{user.last}}</h1>
+<h1>Add Post for {{user.full_name}}</h1>
+
 <form method="POST">
-    <table>
-	<tr><th><label for="title">Title</label></th>
-	    <td><input name="title" type="text" value=""/></tr></td>
 
-	    <tr><th><label for="content">Content</label></th>
-		<td><textarea name="content" type="text" value=""></textarea></td></tr>
+    <div clas="form-group row">
+	<label for="title" class="col-sm-2 col-form-label">Title</label>
+	<div class="col-sm-10">
+	    <input class="form-control" id="title" name="title" />
+	</div>
+    </div>
 
-    </table>
-    <input type="submit" value="add" formaction="/users/{{user.id}}/posts/new"></input>
-    <input type="submit" value="Cancel" formaction="/users" ></input>
+ <div class="form-group row">
+     <label for="content" class="col-sm-2 col-form-label">Content</label>
+	<textarea class="form-control" id="content" name="content" rows="6" cols="30"></textarea>
+ </div>
+    
+ <div class="form-check">
+     {% for tag in tags %}
+     <div>
+	 <label class="form-check-label" for={{tag.id}}>{{tag.name}}</label>
+	 <input type="checkbox" class="form-check-input" id={{tag.id}} name="tags" value={{tag.id}}> {{tag.tag_name}}</input>
+     </div>
+     {% endfor %}
+ </div>
+
+
+<div class="form-group row">
+    <div class="ml-auto mr-3">
+	<a href="/users/{{ user.id }}" class="btn btn-info">Cancel</a>
+	<button type="submit" class="btn btn-success">Add</button>
+    </div>
+</div>
+
 </form>
+
 {% endblock %}

@@ -2,7 +2,6 @@
 
 {% block title %}user detail{% endblock %}
 
-2
 {% block content%}
 <img alt="" src=""/>
 <h1 class="display-2 text-center">{{user.first}} {{user.last}}</h1>
@@ -16,14 +15,15 @@
 
 
 <div class="text-center">
-    p<h2 class="display-3">Posts</h2>
+    <h2 class="display-3">Posts</h2>
     <hr/>
 <ul>
+
     {% for post in user.posts %}
     <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
     {% endfor %}
-</ul>
 
+</ul>
 <br>
 <a href="/">Goto Main List</a>
 </div>

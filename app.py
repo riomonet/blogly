@@ -1,8 +1,9 @@
 """Blogly App"""
 
+
 from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, Users, Posts, Tags
+from models import db, connect_db, Users, Posts, Tags, Tag_Posts
 from datetime import datetime
 from forms import SnackForm
 
@@ -59,17 +60,12 @@ def edit_tag_post(tag_id):
     db.session.commit()
     return redirect('/tags')
 
-
 @app.route('/tags/<tag_id>/delete')
 def delete_tag(tag_id):
 
     Tags.query.filter_by(id=tag_id).delete()
     db.session.commit();
     return redirect ('/tags')
-
-
-
-
 
 @app.route('/users', methods=["POST","GET"])
 def user_list():
@@ -121,14 +117,21 @@ def delete_user(user_id):
 @app.route('/users/<user_id>/posts/new')
 def new_post(user_id):
     user = Users.query.get(user_id)
-    return render_template('add_post.html', user = user)
+    tags = Tags.query.all()
+    return render_template('add_post.html', user = user, tags = tags)
 
 @app.route('/users/<user_id>/posts/new', methods=["POST"])
 def add_post_to_db(user_id):
     title = request.form['title']
     content = request.form['content']
     time_stamp = date = datetime.now()
-    p = Posts(title=title, content=content,created_at = time_stamp, user = user_id )
+    
+    tag_list = request.form.getlist("tags")
+    tag_ids = [int(num) for num in tag_list]
+    tags = Tags.query.filter(Tags.id.in_(tag_ids)).all()
+    print(tags)
+    p = Posts(title=title, content=content,created_at = time_stamp, user = user_id, tags=tags )
+
     db.session.add(p)
     db.session.commit()
     user = Users.query.get(user_id)
@@ -137,12 +140,14 @@ def add_post_to_db(user_id):
 @app.route('/posts/<post_id>')
 def view_post(post_id):
     post = Posts.query.get(post_id)
-    return render_template('post.html',post=post)
+    tags = post.tags
+    return render_template('post.html',post=post, tags=tags)
 
 @app.route('/posts/<post_id>/edit')
 def edit_post(post_id):
     post = Posts.query.get(post_id)
-    return render_template('edit_post.html',post=post)
+    tags = Tags.query.all()
+    return render_template('edit_post.html',post=post, tags=tags)
 
 @app.route('/posts/<post_id>/edit', methods=["POST"])
 def update_posts_table(post_id):
@@ -150,9 +155,14 @@ def update_posts_table(post_id):
     post.title = request.form['title']
     post.content = request.form['content']
     post.created_at = datetime.now()
+
+    tag_list = request.form.getlist("tags")
+    tag_ids = [int(num) for num in tag_list]
+    post.tags = Tags.query.filter(Tags.id.in_(tag_ids)).all()
+
     db.session.add(post)
     db.session.commit()
-    return render_template('post.html', post = post)
+    return redirect(f'/posts/{post_id}')
 
 @app.route('/posts/<post_id>/delete', methods=["POST"])
 def delete_post(post_id):
@@ -161,12 +171,4 @@ def delete_post(post_id):
     db.session.commit();
     return redirect (f'/users/{user}')
     
-@app.route("/snacks/new", methods=["POST","GET "])
-def add_snack():
-    form = SnackForm()
-    if form.validate_on_submit():
-        return redirect('/users')
-        
-    else:                       # get request goes to the else
-        return render_template("add_snack_form.html" , form=form)
 
